@@ -29,8 +29,11 @@ async function run() {
         });
 
         // GET API (display specific user's events)
-        app.get('/events', async(req, res) => {
-          const cursor = eventsCollection.find({});
+        app.get('/events/:email', async(req, res) => {
+          const email = req.params.email;
+          console.log(email);
+          const query = { email: { $in: [ email ] } }
+          const cursor = eventsCollection.find(query);
           const eventsDetails = await cursor.toArray();
           res.json(eventsDetails);
         })
