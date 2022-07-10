@@ -1,6 +1,7 @@
 const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const cors = require('cors');
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 
 const app = express();
@@ -31,11 +32,20 @@ async function run() {
         // GET API (display specific user's events)
         app.get('/events/:email', async(req, res) => {
           const email = req.params.email;
-          console.log(email);
+          // console.log(email);
           const query = { email: { $in: [ email ] } }
           const cursor = eventsCollection.find(query);
           const eventsDetails = await cursor.toArray();
           res.json(eventsDetails);
+        });
+
+        // DELETE API
+        app.delete('/events/:id', async(req, res) => {
+          const id = req.params.id;
+          const query = { _id:ObjectId(id) };
+          const result = await eventsCollection.deleteOne(query);
+          console.log("delete successfully", result);
+          res.json(result);
         })
     }
     finally{
