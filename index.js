@@ -18,15 +18,17 @@ async function run() {
     try{
         await client.connect();
         const database = client.db("volunteers");
-        const databaseCollection = database.collection("events");
+        const eventsCollection = database.collection("events");
 
         // POST API
         app.post('/events', async(req, res) => {
           const events = req.body;
-          console.log(events);
-          console.log('hitted');
+          // console.log(events);
+          // console.log('hitted');
+          const result = await eventsCollection.insertOne(events);
+          console.log("event inserted -", result);
+          res.json(result);
         })
-        // const result = await databaseCollection.insertOne(doc);
     }
     finally{
         // await client.close();
