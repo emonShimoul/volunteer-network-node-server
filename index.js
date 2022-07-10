@@ -23,11 +23,16 @@ async function run() {
         // POST API
         app.post('/events', async(req, res) => {
           const events = req.body;
-          // console.log(events);
-          // console.log('hitted');
           const result = await eventsCollection.insertOne(events);
           console.log("event inserted -", result);
           res.json(result);
+        });
+
+        // GET API (display specific user's events)
+        app.get('/events', async(req, res) => {
+          const cursor = eventsCollection.find({});
+          const eventsDetails = await cursor.toArray();
+          res.json(eventsDetails);
         })
     }
     finally{
