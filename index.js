@@ -44,7 +44,7 @@ async function run() {
           const id = req.params.id;
           const query = { _id:ObjectId(id) };
           const result = await eventsCollection.deleteOne(query);
-          console.log("delete successfully", result);
+          // console.log("delete successfully", result);
           res.json(result);
         })
     }
