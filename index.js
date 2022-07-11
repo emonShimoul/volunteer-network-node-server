@@ -70,7 +70,7 @@ async function run() {
           res.json(result);
         });
 
-        // DELETE Registered User From Admin
+        // DELETE Registered User From Both Admin and User
         app.delete('/registeredUser/:id', async(req, res) => {
           const id = req.params.id;
           const query = { _id:ObjectId(id) };
