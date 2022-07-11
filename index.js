@@ -59,16 +59,25 @@ async function run() {
           const cursor = eventsCollection.find({});
           const eventsDetails = await cursor.toArray();
           res.json(eventsDetails);
-        })
+        });
 
-        // DELETE API
+        // DELETE Events From Admin
         app.delete('/events/:id', async(req, res) => {
           const id = req.params.id;
           const query = { _id:ObjectId(id) };
           const result = await eventsCollection.deleteOne(query);
           // console.log("delete successfully", result);
           res.json(result);
-        })
+        });
+
+        // DELETE Registered User From Admin
+        app.delete('/registeredUser/:id', async(req, res) => {
+          const id = req.params.id;
+          const query = { _id:ObjectId(id) };
+          const result = await registeredUserCollection.deleteOne(query);
+          // console.log("delete successfully", result);
+          res.json(result);
+        });
     }
     finally{
         // await client.close();
