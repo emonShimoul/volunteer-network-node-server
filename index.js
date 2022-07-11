@@ -39,6 +39,13 @@ async function run() {
           res.json(eventsDetails);
         });
 
+        // Get all events
+        app.get('/events', async(req, res) => {
+          const cursor = eventsCollection.find({});
+          const eventsDetails = await cursor.toArray();
+          res.json(eventsDetails);
+        })
+
         // DELETE API
         app.delete('/events/:id', async(req, res) => {
           const id = req.params.id;
