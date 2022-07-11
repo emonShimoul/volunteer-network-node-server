@@ -20,23 +20,38 @@ async function run() {
         await client.connect();
         const database = client.db("volunteers");
         const eventsCollection = database.collection("events");
+        const registeredUserCollection = database.collection("registeredUser");
 
         // POST API
         app.post('/events', async(req, res) => {
           const events = req.body;
           const result = await eventsCollection.insertOne(events);
+          // console.log("event inserted -", result);
+          res.json(result);
+        });
+
+        // POST Registered User
+        app.post('/registeredUser', async(req, res) => {
+          const registeredUser = req.body;
+          const result = await registeredUserCollection.insertOne(registeredUser);
           console.log("event inserted -", result);
           res.json(result);
         });
 
+        app.get('/registeredUser', async(req, res) => {
+          const cursor = registeredUserCollection.find({});
+          const registeredUserDetails = await cursor.toArray();
+          res.json(registeredUserDetails);
+        })
+
         // GET API (display specific user's events)
-        app.get('/events/:email', async(req, res) => {
+        app.get('/registeredUser/:email', async(req, res) => {
           const email = req.params.email;
           // console.log(email);
           const query = { email: { $in: [ email ] } }
-          const cursor = eventsCollection.find(query);
-          const eventsDetails = await cursor.toArray();
-          res.json(eventsDetails);
+          const cursor = registeredUserCollection.find(query);
+          const registeredUserDetails = await cursor.toArray();
+          res.json(registeredUserDetails);
         });
 
         // Get all events
